@@ -17,32 +17,6 @@
 
 ```
 
-## babel库设置
-
-``` js
-
-{
-  "plugins": [
-    [
-      "@babel/plugin-transform-react-jsx",
-      {
-        "pragma": "h",
-        "pragmaFrag": "Fragment"
-      }
-    ],
-    [
-      "babel-plugin-jsx-pragmatic", 
-      {
-        "module": "preact",
-        "import": "h",
-        "export": "h"
-      }
-    ]
-  ]
-}
-
-```
-
 ## 微前端配置 emp-config.js
 
 ``` js
@@ -58,11 +32,39 @@ module.exports = ({config, env, empEnv}) => {
 
   const host = conf.host
   const port = conf.port
-  const projectName = 'vue3Components'
+  const projectName = 'preactComponents'
   const publicPath = conf.publicPath
 
   const srcPath = path.resolve('./src')
   config.entry('index').clear().add(path.join(srcPath, 'index.js'))
+
+  config.module
+    .rule('preact')
+    .test(/\.(js|jsx|ts|tsx)$/)
+    .exclude
+    .add(/node_modules/)
+    .end()
+    .use('babel')
+    .loader('babel-loader')
+    .options({
+      plugins: [
+      [
+        require('@babel/plugin-transform-react-jsx').default,
+        {
+          pragma: "h",
+          pragmaFrag: "Fragment"
+        }
+      ],
+      [
+        require.resolve('babel-plugin-jsx-pragmatic'),
+        {
+          module: "preact",
+          import: "h",
+          export: "h"
+        }
+      ]
+    ]
+    })
 
   config.plugin('html').tap(args => {
     args[0] = {

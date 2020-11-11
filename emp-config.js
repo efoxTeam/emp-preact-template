@@ -26,7 +26,34 @@ module.exports = ({config, env, empEnv}) => {
     }
     return args
   })
-
+  config.module
+    .rule('preact')
+    .test(/\.(js|jsx|ts|tsx)$/)
+    .exclude
+    .add(/node_modules/)
+    .end()
+    .use('babel')
+    .loader('babel-loader')
+    .options({
+      plugins: [
+      [
+        require('@babel/plugin-transform-react-jsx').default,
+        {
+          pragma: "h",
+          pragmaFrag: "Fragment"
+        }
+      ],
+      [
+        require.resolve('babel-plugin-jsx-pragmatic'),
+        {
+          module: "preact",
+          import: "h",
+          export: "h"
+        }
+      ]
+    ]
+    })
+    
   config.plugin('mf').tap(args => {
     args[0] = {
       ...args[0],
