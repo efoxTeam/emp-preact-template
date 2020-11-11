@@ -1,15 +1,16 @@
-// const createBabelConfig = require('babel-config');
 const path = require('path')
-module.exports = ({config, env, empEnv}) => {
-  const port = 8083
-  const projectName = 'empPReactBase'
+const ProjectRootPath = path.resolve('./')
+const {getConfig} = require(path.join(ProjectRootPath, './src/config'))
 
-  const url = {
-    prod: 'https://emp-react-base.yourdomain.com/',
-    test: 'https://emp-react-base-test.yourdomain.com/',
-    dev: `http://localhost:${port}/`,
-  }
-  const publicPath = empEnv ? url[empEnv] : `http://localhost:${port}/`
+module.exports = ({config, env, empEnv}) => {
+  const confEnv = env === 'production' ? 'prod' : 'dev'
+  const conf = getConfig(empEnv || confEnv)
+  console.log('config', conf)
+
+  const host = conf.host
+  const port = conf.port
+  const projectName = 'vue3Components'
+  const publicPath = conf.publicPath
 
   const srcPath = path.resolve('./src')
   config.entry('index').clear().add(path.join(srcPath, 'index.js'))
@@ -40,7 +41,6 @@ module.exports = ({config, env, empEnv}) => {
     }
     return args 
   })
-
   config.output.publicPath(publicPath)
   config.devServer.port(port)
 }

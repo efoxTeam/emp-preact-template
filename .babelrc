@@ -1,18 +1,4 @@
 {
-  "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "modules": false
-      }
-    ], 
-    [
-      "@babel/preset-typescript",
-      {
-        "jsxPragma": "h"
-      }
-    ]
-  ],
   "plugins": [
     [
       "@babel/plugin-transform-react-jsx",
