@@ -1,15 +1,15 @@
+const withPreact = require('@efox/emp-preact')
 const path = require('path')
 const ProjectRootPath = path.resolve('./')
-const {getConfig} = require(path.join(ProjectRootPath, './src/config'))
+const { getConfig } = require(path.join(ProjectRootPath, './src/config'))
 
-module.exports = ({config, env, empEnv}) => {
+module.exports = withPreact(({ config, env, empEnv }) => {
   const confEnv = env === 'production' ? 'prod' : 'dev'
   const conf = getConfig(empEnv || confEnv)
-  console.log('config', conf)
 
   const host = conf.host
   const port = conf.port
-  const projectName = 'vue3Components'
+  const projectName = 'preactComponents'
   const publicPath = conf.publicPath
 
   const srcPath = path.resolve('./src')
@@ -26,48 +26,21 @@ module.exports = ({config, env, empEnv}) => {
     }
     return args
   })
-  config.module
-    .rule('preact')
-    .test(/\.(js|jsx|ts|tsx)$/)
-    .exclude
-    .add(/node_modules/)
-    .end()
-    .use('babel')
-    .loader('babel-loader')
-    .options({
-      plugins: [
-      [
-        require('@babel/plugin-transform-react-jsx').default,
-        {
-          pragma: "h",
-          pragmaFrag: "Fragment"
-        }
-      ],
-      [
-        require.resolve('babel-plugin-jsx-pragmatic'),
-        {
-          module: "preact",
-          import: "h",
-          export: "h"
-        }
-      ]
-    ]
-    })
-    
+ 
   config.plugin('mf').tap(args => {
     args[0] = {
       ...args[0],
       ...{
         name: projectName,
-        library: {type: 'var', name: projectName},
+        library: { type: 'var', name: projectName },
         filename: 'emp.js',
         exposes: {
           './header': 'src/components/header/index.jsx',
         },
       },
     }
-    return args 
+    return args
   })
   config.output.publicPath(publicPath)
   config.devServer.port(port)
-}
+})

@@ -4,7 +4,7 @@ import Home from '../routes/home';
 
 const App = () => (
 	<div id="app">
-		<Header />
+		<Header menu={[{name: 'index', path: '/'}]}/>
 		<Router>
 			<Home path="/" />
 		</Router>
