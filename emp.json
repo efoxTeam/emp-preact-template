@@ -1,0 +1,10 @@
+{
+  "name": "empPreact",
+  "remotes": {
+  },
+  "exposes": {
+    "./header": "src/components/header/index.jsx"
+  },
+  "shared": {
+  }
+}

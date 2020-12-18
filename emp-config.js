@@ -2,6 +2,7 @@ const withPreact = require('@efox/emp-preact')
 const path = require('path')
 const ProjectRootPath = path.resolve('./')
 const { getConfig } = require(path.join(ProjectRootPath, './src/config'))
+const empConfig = require(`${resolveApp('')}/emp.json`);
 
 module.exports = withPreact(({ config, env, empEnv }) => {
   const confEnv = env === 'production' ? 'prod' : 'dev'
@@ -9,7 +10,6 @@ module.exports = withPreact(({ config, env, empEnv }) => {
 
   const host = conf.host
   const port = conf.port
-  const projectName = 'preactComponents'
   const publicPath = conf.publicPath
 
   const srcPath = path.resolve('./src')
@@ -31,8 +31,8 @@ module.exports = withPreact(({ config, env, empEnv }) => {
     args[0] = {
       ...args[0],
       ...{
-        name: projectName,
-        library: { type: 'var', name: projectName },
+        ...empConfig,
+        library: { type: 'var', name: empConfig.name },
         filename: 'emp.js',
         exposes: {
           './header': 'src/components/header/index.jsx',
