@@ -12,8 +12,8 @@
     "emp": "emp"
   },
   "devDependencies": {
-    "@efox/emp-cli": "^1.3.1",
-    "@efox/emp-preact": "^1.1.0"
+    "@efox/emp-cli": "latest",
+    "@efox/emp-preact": "latest"
   },
   "dependencies": {
     "@babel/plugin-transform-react-jsx": "^7.12.5",
